@@ -6,9 +6,9 @@ export interface IGame {
 }
 
 export class Game implements IGame {
-  private gameField: IGameField;
+  private readonly gameField: IGameField;
 
-  private gameView: IGameView;
+  private readonly gameView: IGameView;
 
   private generatorId?: number;
 
@@ -22,20 +22,6 @@ export class Game implements IGame {
     this.speed = Game.toCorrectSpeed(speed);
 
     this.renderInitialState();
-  }
-
-  private static toCorrectSpeed(speed: number): number {
-    if (speed <= 0) {
-      console.log("Speed must be greater than 0");
-      return 0.1;
-    }
-
-    if (speed > 5) {
-      console.log("Speed should not be more than 5");
-      return 5;
-    }
-
-    return speed;
   }
 
   renderInitialState() {
@@ -59,13 +45,6 @@ export class Game implements IGame {
     this.gameView.onFieldSizeChange(this.changeFieldSize.bind(this));
     this.gameView.onSpeedChange(this.changeSpeed.bind(this));
     this.gameView.onGameStateChange(this.toggleIsRunning.bind(this));
-  }
-
-  private toggleCell(x: number, y: number) {
-    const state = this.gameField.getState();
-
-    this.gameField.toggleCellState(x, y);
-    this.gameView.updateGameField(state);
   }
 
   private changeFieldSize(width: number, height: number) {
@@ -92,6 +71,14 @@ export class Game implements IGame {
     }
   }
 
+  private fillState(cellValue?: 0 | 1) {
+    this.gameField.fillState(cellValue);
+
+    const state = this.gameField.getState();
+
+    this.gameView.updateGameField(state);
+  }
+
   private next() {
     const isNextGeneration = this.gameField.nextGeneration();
     const state = this.gameField.getState();
@@ -107,6 +94,25 @@ export class Game implements IGame {
     }
   }
 
+  private start() {
+    clearTimeout(this.generatorId);
+
+    this.generatorId = window.setTimeout(() => {
+      this.next();
+    }, this.speed * 1000);
+  }
+
+  private stop() {
+    clearTimeout(this.generatorId);
+  }
+
+  private toggleCell(x: number, y: number) {
+    const state = this.gameField.getState();
+
+    this.gameField.toggleCellState(x, y);
+    this.gameView.updateGameField(state);
+  }
+
   private toggleIsRunning(isRunning: boolean) {
     /* eslint no-unused-expressions: ["error", { "allowTernary": true }] */
     isRunning ? this.start() : this.stop();
@@ -120,23 +126,17 @@ export class Game implements IGame {
     }
   }
 
-  private start() {
-    clearTimeout(this.generatorId);
+  private static toCorrectSpeed(speed: number): number {
+    if (speed <= 0) {
+      console.log("Speed must be greater than 0");
+      return 0.1;
+    }
 
-    this.generatorId = window.setTimeout(() => {
-      this.next();
-    }, this.speed * 1000);
-  }
+    if (speed > 5) {
+      console.log("Speed should not be more than 5");
+      return 5;
+    }
 
-  private stop() {
-    clearTimeout(this.generatorId);
-  }
-
-  private fillState(cellValue?: 0 | 1) {
-    this.gameField.fillState(cellValue);
-
-    const state = this.gameField.getState();
-
-    this.gameView.updateGameField(state);
+    return speed;
   }
 }
