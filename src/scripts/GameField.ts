@@ -18,7 +18,7 @@ export class GameField implements IGameField {
   constructor(width: number, height: number) {
     this.width = width;
     this.height = height;
-    this.state = this.initState(width, height);
+    this.state = GameField.initState(width, height);
   }
 
   checkIfOutsideField(x: number, y: number) {

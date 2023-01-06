@@ -53,9 +53,9 @@ export class Game implements IGame {
 
   private bindCallbacks() {
     this.gameView.onCellClick(this.toggleCell.bind(this));
-    this.gameView.onNextBtnClick(this.next.bind(this));
-    this.gameView.onRandomBtnClick(this.fillState.bind(this));
-    this.gameView.onClearBtnClick(this.fillState.bind(this, 0));
+    this.gameView.onBtnNextClick(this.next.bind(this));
+    this.gameView.onBtnRandomClick(this.fillState.bind(this));
+    this.gameView.onBtnClearClick(this.fillState.bind(this, 0));
     this.gameView.onFieldSizeChange(this.changeFieldSize.bind(this));
     this.gameView.onSpeedChange(this.changeSpeed.bind(this));
     this.gameView.onGameStateChange(this.toggleIsRunning.bind(this));
