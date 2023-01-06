@@ -21,10 +21,6 @@ export class GameField implements IGameField {
     this.state = GameField.initState(width, height);
   }
 
-  checkIfOutsideField(x: number, y: number) {
-    return x < 0 || y < 0 || x >= this.width || y >= this.height;
-  }
-
   fillState(cellValue?: 0 | 1) {
     if (typeof cellValue !== "undefined") {
       this.state = this.state.map((row) => row.map((cell) => cellValue));
@@ -34,30 +30,6 @@ export class GameField implements IGameField {
     this.state = this.state.map((row) =>
       row.map((cell) => Math.round(Math.random()) as Cell)
     );
-  }
-
-  getLivingNeighborCount(x: number, y: number) {
-    let count = 0;
-
-    for (let i = -1; i <= 1; i++) {
-      for (let j = -1; j <= 1; j++) {
-        const [x1, y1] = [x + j, y + i];
-
-        if (this.checkIfOutsideField(x1, y1)) {
-          continue;
-        }
-
-        if (x1 === x && y1 === y) {
-          continue;
-        }
-
-        if (this.state[y1][x1]) {
-          count++;
-        }
-      }
-    }
-
-    return count;
   }
 
   getState() {
@@ -89,8 +61,6 @@ export class GameField implements IGameField {
         newState[y][x] = this.state[y][x];
       }
     }
-
-    console.log(newState);
 
     if (
       GameField.arraysEqual(this.state, newState) ||
@@ -127,6 +97,10 @@ export class GameField implements IGameField {
     this.state[y][x] = +!this.state[y][x] as Cell;
   }
 
+  private checkIfOutsideField(x: number, y: number) {
+    return x < 0 || y < 0 || x >= this.width || y >= this.height;
+  }
+
   private static arraysEqual(arr1: Cell[][], arr2: Cell[][]) {
     return JSON.stringify(arr1) === JSON.stringify(arr2);
   }
@@ -147,5 +121,29 @@ export class GameField implements IGameField {
     }
 
     return newState;
+  }
+
+  private getLivingNeighborCount(x: number, y: number) {
+    let count = 0;
+
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        const [x1, y1] = [x + j, y + i];
+
+        if (this.checkIfOutsideField(x1, y1)) {
+          continue;
+        }
+
+        if (x1 === x && y1 === y) {
+          continue;
+        }
+
+        if (this.state[y1][x1]) {
+          count++;
+        }
+      }
+    }
+
+    return count;
   }
 }
