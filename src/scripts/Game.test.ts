@@ -166,7 +166,9 @@ describe("Game", () => {
       (newSpeed) => {
         it(`with speed '${newSpeed}'`, () => {
           onSpeedChange(newSpeed);
-          expect(gameView.updateGameState).toHaveBeenCalledWith({ newSpeed });
+          expect(gameView.updateGameState).toHaveBeenCalledWith({
+            speed: newSpeed,
+          });
         });
       }
     );
