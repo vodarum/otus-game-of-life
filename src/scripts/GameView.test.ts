@@ -110,8 +110,8 @@ describe("GameView", () => {
       expect(btnRun.classList.contains("btn-run_stop")).toBeFalsy();
       expect(btnRun.classList.contains("btn-run_play")).toBeTruthy();
       expect(btnRun.innerHTML).toBe("Play");
-      expect(Number(inputWidth.value)).toBe(5);
-      expect(Number(inputHeight.value)).toBe(6);
+      expect(Number(inputWidth.value)).toBe(4);
+      expect(Number(inputHeight.value)).toBe(4);
       expect(Number(inputSpeed.value)).toBe(0.5);
     });
 

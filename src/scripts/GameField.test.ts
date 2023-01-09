@@ -37,11 +37,10 @@ describe("GameField", () => {
 
     describe("has method .fillState", () => {
       it("random filling", () => {
-        gameField.fillState();
-
         let cellsAlive = 0;
         let cellsDead = 0;
 
+        gameField.fillState();
         gameField.getState().forEach((row) => {
           row.forEach((cell) => {
             if (cell) {
